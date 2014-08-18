@@ -1,6 +1,7 @@
 {
-    "interval": 5,
-    "groups":
+    "CheckInterval": 60,
+    "BaseTimeout": 10,
+    "Groups":
         [{
         "In": 8001,
         "Out": ["127.0.0.1:443","127.0.0.1:80"],

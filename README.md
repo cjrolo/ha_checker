@@ -1,5 +1,5 @@
-ha_checker
-==========
+High Avalailability Checker
+===========================
 
 This is an application that given a set of backends to assigned to a port, it will respond to requests with an available backend.
 
