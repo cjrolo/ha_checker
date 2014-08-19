@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"net"
+	"time"
 )
 
 type Backend interface {
@@ -29,4 +31,16 @@ func NewBaseBackend(ip int64, port int16) (*BaseBackend, error) {
 		return nil, fmt.Errorf("IP and Port can't have negative values!")
 	}
 	return &BaseBackend{Ip: ip, Port: port}, nil
+}
+
+func (bb *BaseBackend) IsDown() bool {
+	return bb.Down
+}
+
+func (bb *BaseBackend) Verify() {
+	_, err := net.DialTimeout("tcp", fmt.Sprintf("%d:%d", bb.Ip, bb.Port), time.Second*10)
+	if err != nil {
+		bb.Down = true
+		return
+	}
 }
