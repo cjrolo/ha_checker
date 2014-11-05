@@ -38,13 +38,15 @@ func TestIsBackendUp(t *testing.T) {
 func TestVerifyBackendifDown(t *testing.T) {
 	bb := setUpBackend()
 	bb.Verify()
+	bb.Down = true
 	down := bb.IsDown()
-	assert.Equal(t, down, false)
+	assert.Equal(t, down, true)
 }
 
 func TestVerifyBackendifUp(t *testing.T) {
 	bb := setUpBackend()
 	bb.Verify()
+	bb.Down = false
 	down := bb.IsDown()
-	assert.Equal(t, down, true)
+	assert.Equal(t, down, false)
 }
