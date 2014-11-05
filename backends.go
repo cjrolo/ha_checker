@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"time"
 )
@@ -40,9 +41,10 @@ func (bb *BaseBackend) IsDown() bool {
 }
 
 func (bb *BaseBackend) Verify() {
-	_, err := net.DialTimeout("tcp", fmt.Sprintf("%d:%d", bb.Ip, bb.Port), time.Second*10)
+	_, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", bb.Ip, bb.Port), time.Second*10)
 	// Timeout... Set it as down!
 	if err != nil {
+		log.Println(err)
 		if bb.Down == false {
 			bb.LastValidCheck = time.Now()
 		}
