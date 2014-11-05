@@ -17,9 +17,10 @@ type BackendGroup interface {
 }
 
 type BaseBackend struct {
-	Ip   int64
-	Port int16
-	Down bool
+	Ip             int64
+	Port           int16
+	Down           bool
+	LastValidCheck time.Time
 }
 
 type BaseBackendGroup struct {
@@ -39,8 +40,15 @@ func (bb *BaseBackend) IsDown() bool {
 
 func (bb *BaseBackend) Verify() {
 	_, err := net.DialTimeout("tcp", fmt.Sprintf("%d:%d", bb.Ip, bb.Port), time.Second*10)
+	// Timeout... Set it as down!
 	if err != nil {
+		if bb.Down == false {
+			bb.LastValidCheck = time.Now()
+		}
 		bb.Down = true
 		return
 	}
+	// No error
+	bb.LastValidCheck = time.Now()
+	return
 }
