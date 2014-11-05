@@ -17,7 +17,7 @@ type BackendGroup interface {
 }
 
 type BaseBackend struct {
-	Ip             int64
+	Ip             net.IP
 	Port           int16
 	Down           bool
 	LastValidCheck time.Time
@@ -27,8 +27,9 @@ type BaseBackendGroup struct {
 	Group []BaseBackend
 }
 
-func NewBaseBackend(ip int64, port int16) (*BaseBackend, error) {
-	if port < 0 || ip < 0 {
+func NewBaseBackend(ip_string string, port int16) (*BaseBackend, error) {
+	ip := net.ParseIP(ip_string)
+	if port < 0 || ip == nil {
 		return nil, fmt.Errorf("IP and Port can't have negative values!")
 	}
 	return &BaseBackend{Ip: ip, Port: port}, nil
