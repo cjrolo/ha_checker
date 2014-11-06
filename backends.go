@@ -15,6 +15,8 @@ type Backend interface {
 type BackendGroup interface {
 	SelectBackend() Backend
 	VerifyBackends()
+	AddBackend(Backend) error
+	RemoveBackend() error
 }
 
 type BaseBackend struct {
@@ -25,7 +27,8 @@ type BaseBackend struct {
 }
 
 type BaseBackendGroup struct {
-	Group []BaseBackend
+	Group  []BaseBackend
+	Method string
 }
 
 func NewBaseBackend(ip_string string, port int16) (*BaseBackend, error) {
